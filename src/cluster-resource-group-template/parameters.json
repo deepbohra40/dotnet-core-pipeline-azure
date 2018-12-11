@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceName": {
+            "value": "dotnet-core-pipeline-cluster"
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "dnsPrefix": {
+            "value": "vsc"
+        },
+        "osDiskSizeGB": {
+            "value": 0
+        },
+        "agentCount": {
+            "value": 1
+        },
+        "agentVMSize": {
+            "value": "Standard_DS2_v2"
+        },
+        "servicePrincipalClientId": {
+            "value": null
+        },
+        "servicePrincipalClientSecret": {
+            "value": null
+        },
+        "osType": {
+            "value": "Linux"
+        },
+        "kubernetesVersion": {
+            "value": "1.11.5"
+        },
+        "enableOmsAgent": {
+            "value": true
+        },
+        "workspaceRegion": {
+            "value": "eastus"
+        },
+        "workspaceName": {
+            "value": "DefaultWorkspace-18ab17d2-12ad-4a9f-a571-ec449f380543-EUS"
+        },
+        "omsWorkspaceId": {
+            "value": "/subscriptions/18ab17d2-12ad-4a9f-a571-ec449f380543/resourcegroups/defaultresourcegroup-eus/providers/microsoft.operationalinsights/workspaces/defaultworkspace-18ab17d2-12ad-4a9f-a571-ec449f380543-eus"
+        },
+        "omsSku": {
+            "value": "standalone"
+        },
+        "enableHttpApplicationRouting": {
+            "value": false
+        },
+        "networkPlugin": {
+            "value": "kubenet"
+        },
+        "maxPods": {
+            "value": 30
+        },
+        "enableRBAC": {
+            "value": false
+        }
+    }
+}
