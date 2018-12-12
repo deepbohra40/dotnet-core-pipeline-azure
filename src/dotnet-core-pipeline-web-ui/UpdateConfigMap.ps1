@@ -6,7 +6,7 @@ write-host "IdentityProviderSecret: $IdentityProviderSecret"
 write-host "Environment: $Environment"
 write-host "DropFolder: $DropFolder"
 
-$configMapPath = "$DropFolder/Configuration/ConfigMaps/appsettings.configmaps.json"
+$configMapPath = "$DropFolder/cluster-resource-group/dotnet-core-pipeline-web-ui/Configuration/ConfigMaps/appsettings.configmaps.json"
 $configMapJson = Get-Content $configMapPath | ConvertFrom-Json
 $now = Get-Date
 $configMapJson.ConfigMaps.Environment = -join("$Environment", " ", $now.ToUniversalTime().ToString('HH:mm:ss'))
