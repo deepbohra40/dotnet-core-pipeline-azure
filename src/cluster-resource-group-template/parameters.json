@@ -15,7 +15,7 @@
             "value": 0
         },
         "agentCount": {
-            "value": 1
+            "value": 2
         },
         "agentVMSize": {
             "value": "Standard_DS2_v2"
