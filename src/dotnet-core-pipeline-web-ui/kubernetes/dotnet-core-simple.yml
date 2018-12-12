@@ -17,8 +17,6 @@ spec:
         image: dcurrotto/dotnet-core-pipeline:55
         volumeMounts:
           # name must match the volume name below
-          - name: secret-volume
-            mountPath: /app/Configuration/Secrets
           - name: config-map-volume
             mountPath: /app/Configuration/ConfigMaps
         resources:
@@ -33,11 +31,8 @@ spec:
         env:
         - name: CONFIG_VERSION
           value: "6"
-       # The secret data is exposed to Containers in the Pod through a Volume.
+       # The config data is exposed to Containers in the Pod through a Volume.
       volumes:
-        - name: secret-volume
-          secret:
-            secretName: secret-appsettings    
         - name: config-map-volume
           configMap:
             name: config-map-appsettings    
