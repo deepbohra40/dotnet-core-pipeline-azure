@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: dotnet-core-pipeline
-        image: dcurrotto/dotnet-core-pipeline:93
+        image: dcurrotto/dotnet-core-pipeline:latest
         volumeMounts:
           # name must match the volume name below
           - name: config-map-volume
