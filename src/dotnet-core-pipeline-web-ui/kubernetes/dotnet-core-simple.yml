@@ -30,7 +30,7 @@ spec:
         - containerPort: 80
         env:
         - name: CONFIG_VERSION
-          value: "1"
+          value: "2"
        # The config data is exposed to Containers in the Pod through a Volume.
       volumes:
         - name: config-map-volume
