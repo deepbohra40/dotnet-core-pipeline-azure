@@ -209,7 +209,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
-            "name": "SolutionDeployment-20190505110421",
+            "name": "SolutionDeployment-20190505141626",
             "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
@@ -243,9 +243,9 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
-            "name": "ClusterMonitoringMetricPulisherRoleAssignmentDepl-20190505110421",
+            "name": "ClusterMonitoringMetricPulisherRoleAssignmentDepl-20190505141626",
             "dependsOn": [
-                "/subscriptions/18ab17d2-12ad-4a9f-a571-ec449f380543/resourceGroups/dot-net-core-pipeline-rg/providers/Microsoft.ContainerService/managedClusters/dotnet-core-pipeline-cluster"
+                "/subscriptions/18ab17d2-12ad-4a9f-a571-ec449f380543/resourceGroups/dotnet-core-pipeline-rg/providers/Microsoft.ContainerService/managedClusters/dotnet-core-pipeline-cluster"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -258,18 +258,18 @@
                         {
                             "type": "Microsoft.ContainerService/managedClusters/providers/roleAssignments",
                             "apiVersion": "2018-01-01-preview",
-                            "name": "dotnet-core-pipeline-cluster/Microsoft.Authorization/42fd303b-af52-47d0-b6a6-e313e9b9f03e",
+                            "name": "dotnet-core-pipeline-cluster/Microsoft.Authorization/2569fe56-b4b5-4d31-807a-1ecef52b928b",
                             "properties": {
                                 "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
                                 "principalId": "[parameters('principalId')]",
-                                "scope": "/subscriptions/18ab17d2-12ad-4a9f-a571-ec449f380543/resourceGroups/dot-net-core-pipeline-rg/providers/Microsoft.ContainerService/managedClusters/dotnet-core-pipeline-cluster"
+                                "scope": "/subscriptions/18ab17d2-12ad-4a9f-a571-ec449f380543/resourceGroups/dotnet-core-pipeline-rg/providers/Microsoft.ContainerService/managedClusters/dotnet-core-pipeline-cluster"
                             }
                         }
                     ]
                 }
             },
             "subscriptionId": "18ab17d2-12ad-4a9f-a571-ec449f380543",
-            "resourceGroup": "dot-net-core-pipeline-rg"
+            "resourceGroup": "dotnet-core-pipeline-rg"
         }
     ],
     "outputs": {
