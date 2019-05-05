@@ -20,17 +20,29 @@
         "agentVMSize": {
             "value": "Standard_DS2_v2"
         },
-        "servicePrincipalClientId": {
-            "value": null
-        },
-        "servicePrincipalClientSecret": {
-            "value": null
-        },
         "osType": {
             "value": "Linux"
         },
         "kubernetesVersion": {
-            "value": "1.11.5"
+            "value": "1.12.7"
+        },
+        "networkPlugin": {
+            "value": "kubenet"
+        },
+        "maxPods": {
+            "value": 30
+        },
+        "enableRBAC": {
+            "value": true
+        },
+        "vmssNodePool": {
+            "value": false
+        },
+        "windowsProfile": {
+            "value": false
+        },
+        "enableHttpApplicationRouting": {
+            "value": false
         },
         "enableOmsAgent": {
             "value": true
@@ -47,17 +59,8 @@
         "omsSku": {
             "value": "standalone"
         },
-        "enableHttpApplicationRouting": {
-            "value": false
-        },
-        "networkPlugin": {
-            "value": "kubenet"
-        },
-        "maxPods": {
-            "value": 30
-        },
-        "enableRBAC": {
-            "value": false
+        "principalId": {
+            "value": "e70fa5ea-bbce-4f39-92f6-c614dd137783"
         }
     }
 }

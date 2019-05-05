@@ -48,7 +48,7 @@
         "servicePrincipalClientId": {
             "type": "SecureString",
             "metadata": {
-                "description": "Client ID (used by cloudprovider)"
+                "description": "Client ID (used by cloudprovider)."
             }
         },
         "servicePrincipalClientSecret": {
@@ -74,51 +74,6 @@
                 "description": "The version of Kubernetes."
             }
         },
-        "enableOmsAgent": {
-            "defaultValue": true,
-            "type": "Bool",
-            "metadata": {
-                "description": "boolean flag to turn on and off of omsagent addon"
-            }
-        },
-        "workspaceRegion": {
-            "defaultValue": "East US",
-            "type": "String",
-            "metadata": {
-                "description": "Specify the region for your OMS workspace"
-            }
-        },
-        "workspaceName": {
-            "type": "String",
-            "metadata": {
-                "description": "Specify the name of the OMS workspace"
-            }
-        },
-        "omsWorkspaceId": {
-            "type": "String",
-            "metadata": {
-                "description": "Specify the resource id of the OMS workspace"
-            }
-        },
-        "omsSku": {
-            "defaultValue": "standalone",
-            "allowedValues": [
-                "free",
-                "standalone",
-                "pernode"
-            ],
-            "type": "String",
-            "metadata": {
-                "description": "Select the SKU for your workspace"
-            }
-        },
-        "enableHttpApplicationRouting": {
-            "defaultValue": true,
-            "type": "Bool",
-            "metadata": {
-                "description": "boolean flag to turn on and off of http application routing"
-            }
-        },
         "networkPlugin": {
             "allowedValues": [
                 "azure",
@@ -140,26 +95,87 @@
             "defaultValue": true,
             "type": "Bool",
             "metadata": {
-                "description": "boolean flag to turn on and off of RBAC"
+                "description": "Boolean flag to turn on and off of RBAC."
+            }
+        },
+        "vmssNodePool": {
+            "defaultValue": false,
+            "type": "Bool",
+            "metadata": {
+                "description": "Boolean flag to turn on and off of VM scale sets"
+            }
+        },
+        "windowsProfile": {
+            "defaultValue": false,
+            "type": "Bool",
+            "metadata": {
+                "description": "Boolean flag to turn on and off of VM scale sets"
+            }
+        },
+        "enableHttpApplicationRouting": {
+            "defaultValue": true,
+            "type": "Bool",
+            "metadata": {
+                "description": "Boolean flag to turn on and off of http application routing."
+            }
+        },
+        "enableOmsAgent": {
+            "defaultValue": true,
+            "type": "Bool",
+            "metadata": {
+                "description": "Boolean flag to turn on and off of omsagent addon."
+            }
+        },
+        "workspaceRegion": {
+            "defaultValue": "East US",
+            "type": "String",
+            "metadata": {
+                "description": "Specify the region for your OMS workspace."
+            }
+        },
+        "workspaceName": {
+            "type": "String",
+            "metadata": {
+                "description": "Specify the name of the OMS workspace."
+            }
+        },
+        "omsWorkspaceId": {
+            "type": "String",
+            "metadata": {
+                "description": "Specify the resource id of the OMS workspace."
+            }
+        },
+        "omsSku": {
+            "defaultValue": "standalone",
+            "allowedValues": [
+                "free",
+                "standalone",
+                "pernode"
+            ],
+            "type": "String",
+            "metadata": {
+                "description": "Select the SKU for your workspace."
+            }
+        },
+        "principalId": {
+            "type": "String",
+            "metadata": {
+                "description": "The objectId of service principal."
             }
         }
     },
     "resources": [
         {
             "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2019-04-01",
             "name": "[parameters('resourceName')]",
-            "apiVersion": "2018-03-31",
             "location": "[parameters('location')]",
+            "dependsOn": [],
             "tags": {},
             "properties": {
                 "kubernetesVersion": "[parameters('kubernetesVersion')]",
                 "enableRBAC": "[parameters('enableRBAC')]",
                 "dnsPrefix": "[parameters('dnsPrefix')]",
-                "addonProfiles": {
-                    "httpApplicationRouting": {
-                        "enabled": "[parameters('enableHttpApplicationRouting')]"
-                    }
-                },
                 "agentPoolProfiles": [
                     {
                         "name": "agentpool",
@@ -176,9 +192,84 @@
                 },
                 "networkProfile": {
                     "networkPlugin": "[parameters('networkPlugin')]"
+                },
+                "addonProfiles": {
+                    "httpApplicationRouting": {
+                        "enabled": "[parameters('enableHttpApplicationRouting')]"
+                    },
+                    "omsagent": {
+                        "enabled": "[parameters('enableOmsAgent')]",
+                        "config": {
+                            "logAnalyticsWorkspaceResourceID": "[parameters('omsWorkspaceId')]"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "SolutionDeployment-20190505110421",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "apiVersion": "2015-11-01-preview",
+                            "type": "Microsoft.OperationsManagement/solutions",
+                            "location": "[parameters('workspaceRegion')]",
+                            "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",
+                            "properties": {
+                                "workspaceResourceId": "[parameters('omsWorkspaceId')]"
+                            },
+                            "plan": {
+                                "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",
+                                "product": "[concat('OMSGallery/', 'ContainerInsights')]",
+                                "promotionCode": "",
+                                "publisher": "Microsoft"
+                            }
+                        }
+                    ]
                 }
             },
-            "dependsOn": []
+            "subscriptionId": "[split(parameters('omsWorkspaceId'),'/')[2]]",
+            "resourceGroup": "[split(parameters('omsWorkspaceId'),'/')[4]]"
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "ClusterMonitoringMetricPulisherRoleAssignmentDepl-20190505110421",
+            "dependsOn": [
+                "/subscriptions/18ab17d2-12ad-4a9f-a571-ec449f380543/resourceGroups/dot-net-core-pipeline-rg/providers/Microsoft.ContainerService/managedClusters/dotnet-core-pipeline-cluster"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.ContainerService/managedClusters/providers/roleAssignments",
+                            "apiVersion": "2018-01-01-preview",
+                            "name": "dotnet-core-pipeline-cluster/Microsoft.Authorization/42fd303b-af52-47d0-b6a6-e313e9b9f03e",
+                            "properties": {
+                                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '3913510d-42f4-4e42-8a64-420c390055eb')]",
+                                "principalId": "[parameters('principalId')]",
+                                "scope": "/subscriptions/18ab17d2-12ad-4a9f-a571-ec449f380543/resourceGroups/dot-net-core-pipeline-rg/providers/Microsoft.ContainerService/managedClusters/dotnet-core-pipeline-cluster"
+                            }
+                        }
+                    ]
+                }
+            },
+            "subscriptionId": "18ab17d2-12ad-4a9f-a571-ec449f380543",
+            "resourceGroup": "dot-net-core-pipeline-rg"
         }
     ],
     "outputs": {
